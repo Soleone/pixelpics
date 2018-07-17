@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { binaryRowsToCells } from './board'
+import { binaryRowsToCells } from './board_serializer'
 
 Vue.use(Vuex)
 
 const rows = [
   [1,0,1,0,1],
   [1,1,1,1,1],
-  [0,0,1,0,0],
+  [0,1,1,1,0],
   [0,1,0,1,0],
   [1,0,0,0,1],
 ]

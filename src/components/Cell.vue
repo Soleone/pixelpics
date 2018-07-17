@@ -32,11 +32,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .cell {
+    display: inline-block;
     height: 32px;
     width: 32px;
     padding: 0px;
     margin: 2px;
-    display: inline-block;
     background-color: #ffffff;
     cursor: pointer;
   }

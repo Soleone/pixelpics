@@ -1,6 +1,7 @@
 <template>
   <div class="board">
     <div v-for="(row, x) in cells" class="row" v-bind:key="`row-${x}`">
+      <div class="hint">{{ hints(x) }}</div>
       <cell v-for="cell in row" v-bind:cell="cell" v-bind:key="cell.id">
       </cell>
     </div>
@@ -15,7 +16,8 @@
 <script>
 import Cell from './Cell.vue'
 import store from '../store'
-import { cellsToBinaryRows } from '../board'
+import { cellsToBinaryRows } from '../board_serializer'
+import { hintsForCells } from '../hint_generator'
 
 export default {
   name: 'Board',
@@ -26,8 +28,9 @@ export default {
     numberToFilled(number) {
       return number != 0;
     },
-    saveNew() {
-
+    hints(index) {
+      let row = store.state.cells[index]
+      return hintsForCells(row).join(' ')
     }
   },
   computed: {
@@ -36,7 +39,7 @@ export default {
     },
     cellsToBinaryString() {
       return cellsToBinaryRows(store.state.cells).map( rows => rows.join('')).join('')
-    }
+    },
   },
   components: {
     Cell
@@ -55,6 +58,16 @@ export default {
     padding:0;
     margin:0;
     height:36px
+  }
+
+  .hint {
+    display: inline-block;
+    line-height: 32px;
+    height: 32px;
+    width: 32px;
+    padding: 0px;
+    margin: 2px;
+    background-color: #ffffff;
   }
 
   .options {
