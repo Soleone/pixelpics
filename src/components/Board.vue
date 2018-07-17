@@ -1,7 +1,7 @@
 <template>
   <div class="board">
-    <div v-for="(row, x) in cells" class="row" :key="`row-${x}`">
-      <cell v-for="(cell, y) in row" v-bind:key="cellKey(x, y)" v-bind:filled="cell.filled">
+    <div v-for="(row, x) in cells" class="row" v-bind:key="`row-${x}`">
+      <cell v-for="cell in row" v-bind:cell="cell" v-bind:key="cell.id">
       </cell>
     </div>
 

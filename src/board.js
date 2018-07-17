@@ -1,7 +1,12 @@
 function binaryRowsToCells(rows) {
-  return rows.map( (row) => {
-    return row.map( (cell) => {
-      return { filled: (cell == 1) }
+  return rows.map( (row, x) => {
+    return row.map( (cell, y) => {
+      return {
+        filled: (cell == 1),
+        id: `${x}-${y}`,
+        selected: false,
+        marked: false
+      }
     })
   })
 }

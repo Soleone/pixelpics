@@ -1,24 +1,29 @@
 <template>
   <div class="cell"
-       v-bind:class="{filled: filled, selected: selected}"
+       v-bind:class="{filled: cell.filled, selected: cell.selected}"
        v-on:click="toggleSelect">
   </div>
 </template>
 
 
 <script>
+import store from '../store'
+
 export default {
   name: 'Cell',
-  props: ['id','filled', 'selected', 'marked'],
+  props: ['cell'],
   methods: {
     toggleSelect() {
-      this.selected = !this.selected
+      this.cell.selected = !this.cell.selected
     },
     toggleMark() {
-      this.marked = !this.marked
+      this.cell.marked = !this.cell.marked
     }
   },
-  calculated: {
+  computed: {
+    cells() {
+      return store.state.cells
+    }
   }
 }
 </script>
