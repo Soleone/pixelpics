@@ -15,31 +15,30 @@
 
 <script>
 import Cell from './Cell.vue'
-import store from '../store'
-import { cellsToBinaryRows } from '../board_serializer'
+import { cellsToBinaryRows } from '../cells'
 import { hintsForCells } from '../hint_generator'
 
 export default {
   name: 'Board',
+  props: ['cells', 'editMode'],
   methods: {
     cellKey(x, y) {
       return x + "-" + y;
     },
-    numberToFilled(number) {
-      return number != 0;
-    },
     hints(index) {
-      let row = store.state.cells[index]
+      let row = this.cells[index]
       return hintsForCells(row).join(' ')
     }
   },
   computed: {
-    cells() {
-      return store.state.cells
-    },
     cellsToBinaryString() {
-      return cellsToBinaryRows(store.state.cells).map( rows => rows.join('')).join('')
+      return cellsToBinaryRows(this.cells).map( rows => rows.join('')).join('')
     },
+  },
+  created() {
+    this.cells = this.cells || this.$store.state.default.cells
+    this.$store.state.cells = this.cells
+    this.$store.state.EditMode = this.editMode
   },
   components: {
     Cell
@@ -62,11 +61,14 @@ export default {
 
   .hint {
     display: inline-block;
-    line-height: 32px;
     height: 32px;
-    width: 32px;
-    padding: 0px;
+    width: 64px;
+    padding: 0 8px 0 0;
     margin: 2px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 12px;
+    color: #666666;
     background-color: #ffffff;
   }
 

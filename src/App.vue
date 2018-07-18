@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Board</router-link>
+      <router-link to="root">Home</router-link>
+      <router-link to="new">New</router-link>
     </nav>
 
     <router-view />
@@ -25,7 +26,7 @@ export default {
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
 
   body {
-    background-color: #EEEEEE;
+    background-color: #ffffff;
     font-family: 'Montserrat', sans-serif;
     display: grid;
     grid-template-rows: auto;

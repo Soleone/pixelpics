@@ -1,28 +1,37 @@
 <template>
   <div class="cell"
-       v-bind:class="{filled: cell.filled, selected: cell.selected}"
-       v-on:click="toggleSelect">
+       v-bind:class="{filled: cell.filled, selected: cell.selected, marked: cell.marked}"
+       v-on:mousedown="primaryAction"
+       v-on:contextmenu.prevent="secondaryAction">
   </div>
 </template>
 
 
 <script>
-import store from '../store'
-
 export default {
   name: 'Cell',
   props: ['cell'],
   methods: {
+    primaryAction() {
+      if (this.$store.state.editMode) {
+        this.toggleFilled()
+      } else {
+        this.toggleSelect()
+      }
+    },
+    secondaryAction() {
+      if (!this.$store.state.editMode) {
+        this.toggleMark()
+      }
+    },
+    toggleFilled() {
+      this.cell.filled = !this.cell.filled
+    },
     toggleSelect() {
       this.cell.selected = !this.cell.selected
     },
     toggleMark() {
       this.cell.marked = !this.cell.marked
-    }
-  },
-  computed: {
-    cells() {
-      return store.state.cells
     }
   }
 }
@@ -37,19 +46,23 @@ export default {
     width: 32px;
     padding: 0px;
     margin: 2px;
-    background-color: #ffffff;
+    background-color: #e8e8e8;
     cursor: pointer;
   }
 
-  .empty {
-    background-color: #eeeeee;
+  .filled {
+    background-color: #888888;
+    height: 31px;
+    width: 31px;
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
   }
 
-  .filled {
-    background-color: #333333;
+  .marked {
+    background-color: #ffffb3;
   }
 
   .selected {
-    background-color: lightblue;
+    background-color: #b3e6ff;
   }
 </style>
