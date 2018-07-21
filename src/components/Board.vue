@@ -1,13 +1,35 @@
 <template>
-  <div class="board">
-    <div v-for="(row, x) in cells" class="row" v-bind:key="`row-${x}`">
-      <div class="hint">{{ hints(x) }}</div>
-      <cell v-for="cell in row" v-bind:cell="cell" v-bind:key="cell.id">
-      </cell>
-    </div>
+  <div class="board-wrapper">
+    <table class="board">
+      <tr class="hint-header row">
+        <td class="hint-header-spacer">
+          <div class="hint hint-row">
+            <!-- empty placeholder -->
+          </div>
+        </td>
+        <td v-for="(_, y) in cells[0]" :key="`hint-col-${y}`">
+          <div class="hint hint-column">
+            <div v-for="(hint, index) in columnHints(y).reverse()" :key="`hint-item-${index}`" class="hint-item">
+              {{ hint }}
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr v-for="(row, x) in cells" class="row" :key="`row-${x}`">
+        <td>
+          <div class="hint hint-row">
+            {{ hints(x) }}
+          </div>
+        </td>
+
+        <cell v-for="cell in row" :key="cell.id" :cell="cell">
+        </cell>
+      </tr>
+    </table>
 
     <div class="options">
-      <input type="text" v-bind:value="cellsToBinaryString" class="cells-binary-string">
+      <input type="text" :value="cellsToBinaryString" class="cells-binary-string">
     </div>
   </div>
 </template>
@@ -28,12 +50,21 @@ export default {
     hints(index) {
       let row = this.cells[index]
       return hintsForCells(row).join(' ')
+    },
+    columnHints(x) {
+      let column = this.transposedCells[x];
+      return hintsForCells(column)
     }
   },
   computed: {
     cellsToBinaryString() {
       return cellsToBinaryRows(this.cells).map( rows => rows.join('')).join('')
     },
+    transposedCells() {
+      return this.cells[0].map( (column, columnIndex) => {
+        return this.cells.map(row => row[columnIndex]);
+      });
+    }
   },
   created() {
     this.cells = this.cells || this.$store.state.default.cells
@@ -51,25 +82,65 @@ export default {
   .board {
     padding:0;
     margin:0;
+    border-collapse: inherit;
+    border-spacing: 0px;
+  }
+
+  .board tr {
+    padding:0;
+    margin:0;
+  }
+
+  .board td {
+    padding:0;
+    margin:1px;
   }
 
   .row {
     padding:0;
     margin:0;
-    height:36px
+  }
+
+  .cell-row {
+    height: 32px;
   }
 
   .hint {
     display: inline-block;
-    height: 32px;
-    width: 64px;
-    padding: 0 8px 0 0;
     margin: 2px;
+    padding: 4px;
     text-align: right;
     font-weight: bold;
     font-size: 12px;
     color: #666666;
     background-color: #ffffff;
+    cursor: default;
+  }
+
+  .hint-row {
+    width: 64px;
+    padding:0;
+    margin: 0 8px 0 0;
+  }
+
+  .hint-column {
+    height: 96px;
+    width: 32px;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .hint-item {
+    align-self: flex-end;
+  }
+
+  .hint-header td {
+    width: 32px;
+  }
+
+  .hint-header .hint-header-spacer {
+    width: 64px;
   }
 
   .options {

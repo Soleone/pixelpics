@@ -1,9 +1,9 @@
 <template>
-  <div class="cell"
-       v-bind:class="{filled: cell.filled, selected: cell.selected, marked: cell.marked}"
-       v-on:mousedown="primaryAction"
-       v-on:contextmenu.prevent="secondaryAction">
-  </div>
+  <td class="cell"
+       :class="{filled: cell.filled, selected: cell.selected, marked: cell.marked}"
+       @mousedown="primaryAction"
+       @contextmenu.prevent="secondaryAction">
+  </td>
 </template>
 
 
@@ -42,10 +42,10 @@ export default {
 <style scoped>
   .cell {
     display: inline-block;
-    height: 32px;
-    width: 32px;
-    padding: 0px;
-    margin: 2px;
+    height: 31px;
+    width: 31px;
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
     background-color: #e8e8e8;
     cursor: pointer;
   }
