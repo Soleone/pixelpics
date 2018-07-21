@@ -2,7 +2,8 @@
   <td class="cell"
        :class="{filled: cell.filled, selected: cell.selected, marked: cell.marked}"
        @mousedown="primaryAction"
-       @contextmenu.prevent="secondaryAction">
+       @contextmenu.prevent="secondaryAction"
+       @keyup.enter="primaryAction">
   </td>
 </template>
 
@@ -33,12 +34,16 @@ export default {
     toggleMark() {
       this.cell.marked = !this.cell.marked
     }
+  },
+  computed: {
+    displayFilled() {
+      return (this.cell.filled && this.editMode);
+    }
   }
 }
 </script>
 
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .cell {
     display: inline-block;
@@ -51,7 +56,7 @@ export default {
   }
 
   .filled {
-    background-color: #888888;
+    background-color: #333;
     height: 31px;
     width: 31px;
     border-top: 1px solid #cccccc;
@@ -59,10 +64,10 @@ export default {
   }
 
   .marked {
-    background-color: #ffffb3;
+    background-color: #ffffb3 !important;
   }
 
   .selected {
-    background-color: #b3e6ff;
+    background-color: #666;
   }
 </style>

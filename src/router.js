@@ -8,9 +8,16 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'root',
+      path: '/sample',
+      name: 'sample',
       component: Board,
+      props() {
+        return {
+          params: {
+            editMode: false
+          }
+        }
+      }
     },
     {
       path: '/new',
@@ -18,8 +25,10 @@ export default new Router({
       component: Board,
       props() {
         return {
-          cells: createCells(10, 10),
-          editMode: true
+          params: {
+            cells: createCells(10, 10),
+            editMode: true
+          }
         }
       }
     }

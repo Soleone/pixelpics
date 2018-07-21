@@ -1,5 +1,23 @@
 <template>
   <div class="board-wrapper">
+    <div class="options" v-if="editMode">
+      <b-input-group size="lg" prepend="Editing Board" id="options-input-group">
+        <b-form-input :value="cellsToBinaryString" class="cells-binary-string" id="binary-board-input"></b-form-input>
+
+        <b-input-group-append>
+          <b-btn id="copy-button" variant="primary" @click="copyToClipboard">
+            <icon name="copy"></icon>
+          </b-btn>
+          <b-tooltip target="copy-button" placement="top">
+            Copy to clipboard
+          </b-tooltip>
+          <b-tooltip triggers="" ref="copiedFeedbackTooltip" target="options-input-group" placement="top">
+            Copied to clipboard!
+          </b-tooltip>
+        </b-input-group-append>
+      </b-input-group>
+    </div>
+
     <table class="board">
       <tr class="hint-header row">
         <td class="hint-header-spacer">
@@ -27,49 +45,60 @@
         </cell>
       </tr>
     </table>
-
-    <div class="options">
-      <input type="text" :value="cellsToBinaryString" class="cells-binary-string">
-    </div>
   </div>
 </template>
 
 
 <script>
-import Cell from './Cell.vue'
-import { cellsToBinaryRows } from '../cells'
-import { hintsForCells } from '../hint_generator'
+import Cell from './Cell.vue';
+import { cellsToBinaryRows } from '../cells';
+import { hintsForCells } from '../hint_generator';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Board',
-  props: ['cells', 'editMode'],
+  props: ['params'],
   methods: {
     cellKey(x, y) {
       return x + "-" + y;
     },
     hints(index) {
-      let row = this.cells[index]
-      return hintsForCells(row).join(' ')
+      let row = this.cells[index];
+      return hintsForCells(row).join(' ');
     },
     columnHints(x) {
       let column = this.transposedCells[x];
-      return hintsForCells(column)
+      return hintsForCells(column);
+    },
+    copyToClipboard() {
+      let input = document.getElementById('binary-board-input');
+      input.select();
+      document.execCommand('copy');
+      input.blur();
+      this.$root.$emit('bv::hide::tooltip');
+      this.$refs.copiedFeedbackTooltip.$emit('open');
+      setTimeout( () => {
+        this.$root.$emit('bv::hide::tooltip');
+      }, 1000);
     }
   },
   computed: {
+    ...mapState([
+      'editMode',
+      'cells'
+    ]),
     cellsToBinaryString() {
-      return cellsToBinaryRows(this.cells).map( rows => rows.join('')).join('')
+      return cellsToBinaryRows(this.cells).map( rows => rows.join('')).join('');
     },
     transposedCells() {
       return this.cells[0].map( (column, columnIndex) => {
         return this.cells.map(row => row[columnIndex]);
       });
-    }
+    },
   },
   created() {
-    this.cells = this.cells || this.$store.state.default.cells
-    this.$store.state.cells = this.cells
-    this.$store.state.EditMode = this.editMode
+    this.$store.state.cells = this.params.cells || this.$store.state.default.cells;
+    this.$store.state.editMode = this.params.editMode || false;
   },
   components: {
     Cell
@@ -94,6 +123,14 @@ export default {
   .board td {
     padding:0;
     margin:1px;
+  }
+
+  .cell:nth-child(6) {
+    margin-right: 3px;
+  }
+
+  .row:nth-child(6) {
+    margin-bottom: 3px;
   }
 
   .row {
@@ -148,8 +185,6 @@ export default {
   }
 
   .cells-binary-string {
-    width: 300px;
-    font-size: 14px;
     font-family: monospace;
   }
 

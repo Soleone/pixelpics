@@ -30,7 +30,7 @@ function createCells(rows, columns) {
 
 function newCell() {
   return {
-    filled: true,
+    filled: false,
     selected: false,
     marked: false
   }
