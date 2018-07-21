@@ -24,6 +24,8 @@ export default {
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+  @import '~bootstrap/dist/css/bootstrap.css';
+  @import '~bootstrap-vue/dist/bootstrap-vue.css';
 
   body {
     background-color: #ffffff;
