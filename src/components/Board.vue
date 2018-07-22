@@ -45,6 +45,8 @@
         </cell>
       </tr>
     </table>
+
+    <b-alert variant="success" show v-if="isCompleted">Completed successfully!</b-alert>
   </div>
 </template>
 
@@ -95,6 +97,13 @@ export default {
         return this.cells.map(row => row[columnIndex]);
       });
     },
+    isCompleted() {
+      return this.cells.every( (row) => {
+        return row.every( (cell) => {
+          return cell.filled ? cell.selected : !cell.selected;
+        });
+      });
+    }
   },
   created() {
     this.$store.state.cells = this.params.cells || this.$store.state.default.cells;
@@ -186,6 +195,10 @@ export default {
 
   .cells-binary-string {
     font-family: monospace;
+  }
+
+  .board-wrapper .alert {
+    margin-top: 16px;
   }
 
 </style>

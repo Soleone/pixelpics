@@ -1,7 +1,7 @@
 <template>
   <transition :name="enterTransition" appear>
     <td class="cell animated"
-         :class="{filled: cell.filled, selected: cell.selected, marked: cell.marked, bounceIn: cell.filled}"
+         :class="classes"
          @mousedown="primaryAction"
          @contextmenu.prevent="secondaryAction"
          @keyup.enter="primaryAction">
@@ -11,6 +11,8 @@
 
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'Cell',
   props: ['cell'],
@@ -21,14 +23,14 @@ export default {
   },
   methods: {
     primaryAction() {
-      if (this.$store.state.editMode) {
+      if (this.editMode) {
         this.toggleFilled()
       } else {
         this.toggleSelect()
       }
     },
     secondaryAction() {
-      if (!this.$store.state.editMode) {
+      if (!this.editMode) {
         this.toggleMark()
       }
     },
@@ -36,9 +38,11 @@ export default {
       this.cell.filled = !this.cell.filled
     },
     toggleSelect() {
+      this.cell.marked = false;
       this.cell.selected = !this.cell.selected
     },
     toggleMark() {
+      this.cell.selected = false;
       this.cell.marked = !this.cell.marked
     },
     randomBool() {
@@ -46,8 +50,19 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'editMode'
+    ]),
     displayFilled() {
       return (this.cell.filled && this.editMode);
+    },
+    classes() {
+      return {
+        filled: this.displayFilled,
+        selected: this.cell.selected,
+        marked: this.cell.marked,
+        bounceIn: this.displayFilled || this.cell.selected,
+      }
     }
   },
   created() {
