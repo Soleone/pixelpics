@@ -2,9 +2,8 @@
   <transition :name="enterTransition" appear>
     <td class="cell animated"
          :class="classes"
-         @mousedown="primaryAction"
-         @contextmenu.prevent="secondaryAction"
-         @keyup.enter="primaryAction">
+         @click="primaryAction"
+         @contextmenu.prevent="secondaryAction">
     </td>
   </transition>
 </template>
@@ -15,7 +14,7 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Cell',
-  props: ['cell'],
+  props: ['x', 'y'],
   data() {
     return {
       enterTransition: null
@@ -23,27 +22,29 @@ export default {
   },
   methods: {
     primaryAction() {
+      if (this.isCompleted) return;
+
       if (this.editMode) {
-        this.toggleFilled()
+        this.toggleFilled();
       } else {
-        this.toggleSelect()
+        this.toggleSelected();
       }
     },
     secondaryAction() {
+      if (this.isCompleted) return;
+
       if (!this.editMode) {
-        this.toggleMark()
+        this.toggleMark();
       }
     },
     toggleFilled() {
-      this.cell.filled = !this.cell.filled
+      this.cell.filled = !this.cell.filled;
     },
-    toggleSelect() {
-      this.cell.marked = false;
-      this.cell.selected = !this.cell.selected
+    toggleSelected() {
+      this.$store.commit('toggleCellSelected', { x: this.x, y: this.y });
     },
     toggleMark() {
-      this.cell.selected = false;
-      this.cell.marked = !this.cell.marked
+      this.$store.commit('toggleCellMarked', { x: this.x, y: this.y });
     },
     randomBool() {
       return (Math.random() < 0.5);
@@ -51,8 +52,12 @@ export default {
   },
   computed: {
     ...mapState([
-      'editMode'
+      'editMode',
+      'isCompleted'
     ]),
+    cell() {
+      return this.$store.getters.cellAt(this.x, this.y);
+    },
     displayFilled() {
       return (this.cell.filled && this.editMode);
     },
@@ -60,8 +65,9 @@ export default {
       return {
         filled: this.displayFilled,
         selected: this.cell.selected,
-        marked: this.cell.marked,
+        marked: this.cell.marked && !this.isCompleted,
         bounceIn: this.displayFilled || this.cell.selected,
+        'solved-empty': this.isCompleted,
       }
     }
   },
@@ -86,6 +92,10 @@ export default {
     -vendor-animation-duration: 0.1s;
   }
 
+  .solved-empty {
+    background-color: #f8f8f8;
+  }
+
   .filled {
     background-color: #333;
     height: 31px;
@@ -95,7 +105,7 @@ export default {
   }
 
   .marked {
-    background-color: #ffffb3 !important;
+    background-color: orange !important;
   }
 
   .selected {

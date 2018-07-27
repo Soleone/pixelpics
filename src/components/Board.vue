@@ -1,5 +1,6 @@
 <template>
-  <div class="board-wrapper">
+  <div class="board-wrapper animated" :class="{'fadeLeft': isCompleted}">
+    <h2 class="animated fadeLeft">{{ title }}</h2>
     <div class="options" v-if="editMode">
       <b-input-group size="lg" prepend="Editing Board" id="options-input-group">
         <b-form-input :value="cellsToBinaryString" class="cells-binary-string" id="binary-board-input"></b-form-input>
@@ -25,13 +26,13 @@
             <!-- empty placeholder -->
           </div>
         </td>
-        <td v-for="(_, y) in cells[0]" :key="`hint-col-${y}`">
-          <div class="hint hint-column">
-            <div v-for="(hint, index) in columnHints(y).reverse()" :key="`hint-item-${index}`" class="hint-item">
-              {{ hint }}
+          <td v-for="(_, y) in cells[0]" :key="`hint-col-${y}`">
+            <div class="hint hint-column">
+              <div v-for="(hint, index) in columnHints(y).reverse()" :key="`hint-item-${index}`" class="hint-item">
+                {{ hint }}
+              </div>
             </div>
-          </div>
-        </td>
+          </td>
       </tr>
 
       <tr v-for="(row, x) in cells" class="row" :key="`row-${x}`">
@@ -41,12 +42,14 @@
           </div>
         </td>
 
-        <cell v-for="cell in row" :key="cell.id" :cell="cell">
+        <cell v-for="(cell, y) in row" :key="cell.id" :x="x" :y="y">
         </cell>
       </tr>
     </table>
 
-    <b-alert variant="success" show v-if="isCompleted">Completed successfully!</b-alert>
+    <transition name="bounce">
+      <b-alert variant="success" show v-if="isCompleted && !editMode">Completed successfully!</b-alert>
+    </transition>
   </div>
 </template>
 
@@ -87,7 +90,9 @@ export default {
   computed: {
     ...mapState([
       'editMode',
-      'cells'
+      'cells',
+      'title',
+      'isCompleted',
     ]),
     cellsToBinaryString() {
       return cellsToBinaryRows(this.cells).map( rows => rows.join('')).join('');
@@ -97,17 +102,14 @@ export default {
         return this.cells.map(row => row[columnIndex]);
       });
     },
-    isCompleted() {
-      return this.cells.every( (row) => {
-        return row.every( (cell) => {
-          return cell.filled ? cell.selected : !cell.selected;
-        });
-      });
-    }
   },
+
   created() {
     this.$store.state.cells = this.params.cells || this.$store.state.default.cells;
     this.$store.state.editMode = this.params.editMode || false;
+    this.$store.state.id = this.params.id;
+    this.$store.state.title = this.params.title;
+    this.$store.state.isCompleted = false;
   },
   components: {
     Cell

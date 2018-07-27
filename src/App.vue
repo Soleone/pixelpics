@@ -1,23 +1,35 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/sample">Sample</router-link>
-      <router-link to="new">New</router-link>
+      <router-link to="/new">Create</router-link>
+      <router-link :to="{name: 'boards', params: {id: randomId}}">Random</router-link>
+      <router-link :to="{name: 'boards', params: {id: nextId }}">Next</router-link>
     </nav>
 
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
 
 <script>
 import Cell from './components/Cell.vue'
 import Board from './components/Board.vue'
+import BINARY_CELLS from './cell_data'
 
 export default {
   name: 'app',
   components: {
     Board,
     Cell
+  },
+  computed: {
+    nextId() {
+      if (this.$store.state.id == null) return 1;
+
+      return (parseInt(this.$store.state.id) % Object.keys(BINARY_CELLS).length) + 1;
+    },
+    randomId() {
+      return Math.floor(Math.random() * Math.floor(Object.keys(BINARY_CELLS).length));
+    }
   }
 }
 </script>
