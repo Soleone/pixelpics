@@ -1,22 +1,11 @@
 <template>
   <div class="board-wrapper animated" :class="{'fadeLeft': isCompleted}">
-    <h2 class="animated fadeLeft">{{ title }}</h2>
-    <div class="options" v-if="editMode">
-      <b-input-group size="lg" prepend="Editing Board" id="options-input-group">
-        <b-form-input :value="cellsToBinaryString" class="cells-binary-string" id="binary-board-input"></b-form-input>
 
-        <b-input-group-append>
-          <b-btn id="copy-button" variant="primary" @click="copyToClipboard">
-            <icon name="copy"></icon>
-          </b-btn>
-          <b-tooltip target="copy-button" placement="top">
-            Copy to clipboard
-          </b-tooltip>
-          <b-tooltip triggers="" ref="copiedFeedbackTooltip" target="options-input-group" placement="top">
-            Copied to clipboard!
-          </b-tooltip>
-        </b-input-group-append>
-      </b-input-group>
+    <h2 class="animated fadeLeft">{{ title }}</h2>
+
+    <div class="options" v-if="editMode">
+      <copy-button title="Board Code:" :value="cellsToBinaryString">
+      </copy-button>
     </div>
 
     <table class="board">
@@ -56,6 +45,7 @@
 
 <script>
 import Cell from './Cell.vue';
+import CopyButton from './CopyButton.vue';
 import { cellsToBinaryRows } from '../cells';
 import { hintsForCells } from '../hint_generator';
 import { mapState } from 'vuex';
@@ -112,7 +102,8 @@ export default {
     this.$store.state.isCompleted = false;
   },
   components: {
-    Cell
+    Cell,
+    CopyButton
   }
 }
 </script>
@@ -193,10 +184,6 @@ export default {
 
   .options {
     padding-top: 12px;
-  }
-
-  .cells-binary-string {
-    font-family: monospace;
   }
 
   .board-wrapper .alert {
