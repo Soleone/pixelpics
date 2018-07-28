@@ -92,16 +92,21 @@ export default {
     -vendor-animation-duration: 0.1s;
   }
 
-  .solved-empty {
-    background-color: #f8f8f8;
-  }
-
   .filled {
     background-color: #333;
-    height: 31px;
-    width: 31px;
     border-top: 1px solid #cccccc;
     border-left: 1px solid #cccccc;
+  }
+
+  @media only screen and (max-width: 440px) {
+    .requires-cell-resize .cell {
+      height: 23px;
+      width: 23px;
+    }
+  }
+
+  .solved-empty {
+    background-color: #f8f8f8;
   }
 
   .marked {

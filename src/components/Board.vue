@@ -1,14 +1,14 @@
 <template>
   <div class="board-wrapper animated" :class="{'fadeLeft': isCompleted}">
 
-    <h2 class="bg-white text-muted text-center mt-2">{{ title }}</h2>
+    <h2 class="bg-white text-muted text-center mt-3">{{ title }}</h2>
 
     <div class="options" v-if="editMode">
       <copy-button title="Board Code:" :value="cellsToBinaryString">
       </copy-button>
     </div>
 
-    <table class="board">
+    <table class="board" :class="{'requires-cell-resize': requiresCellResize}">
       <tr class="hint-header row">
         <td class="hint-header-spacer">
           <div class="hint hint-row">
@@ -49,6 +49,8 @@ import CopyButton from './CopyButton.vue';
 import { cellsToBinaryString } from '../cells';
 import { hintsForCells } from '../hint_generator';
 import { mapState } from 'vuex';
+
+const REQUIRES_RESIZE_THRESHOLD = 7;
 
 export default {
   name: 'Board',
@@ -92,6 +94,9 @@ export default {
         return this.cells.map(row => row[columnIndex]);
       });
     },
+    requiresCellResize() {
+      return this.cells[0].length > REQUIRES_RESIZE_THRESHOLD;
+    }
   },
   created() {
     this.$store.state.cells = this.params.cells || this.$store.state.default.cells;
@@ -181,6 +186,15 @@ export default {
     width: 64px;
   }
 
+  @media only screen and (max-width: 440px) {
+    .hint-header .hint-header-spacer {
+      width: 64px !important;
+    }
+
+    .requires-cell-resize .hint-header td {
+      width: 23px;
+    }
+  }
   .options {
     padding-top: 12px;
   }

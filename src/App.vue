@@ -8,7 +8,7 @@
         <b-navbar-nav>
           <b-nav-item to="/new">Create</b-nav-item>
           <b-nav-item :to="{name: 'boards', params: {id: randomId}}">Random</b-nav-item>
-          <b-nav-item :to="{name: 'boards', params: {id: nextId }}">Next</b-nav-item>
+          <b-nav-item :to="{name: 'boards', params: {id: nextId}}">Next</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
