@@ -1,7 +1,7 @@
 <template>
   <div class="board-wrapper animated" :class="{'fadeLeft': isCompleted}">
 
-    <h2 class="animated fadeLeft">{{ title }}</h2>
+    <h2 class="bg-white text-muted text-center mt-2">{{ title }}</h2>
 
     <div class="options" v-if="editMode">
       <copy-button title="Board Code:" :value="cellsToBinaryString">
@@ -93,7 +93,6 @@ export default {
       });
     },
   },
-
   created() {
     this.$store.state.cells = this.params.cells || this.$store.state.default.cells;
     this.$store.state.editMode = this.params.editMode || false;
@@ -103,7 +102,7 @@ export default {
   },
   components: {
     Cell,
-    CopyButton
+    CopyButton,
   }
 }
 </script>

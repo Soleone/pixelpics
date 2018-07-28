@@ -1,10 +1,17 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/new">Create</router-link>
-      <router-link :to="{name: 'boards', params: {id: randomId}}">Random</router-link>
-      <router-link :to="{name: 'boards', params: {id: nextId }}">Next</router-link>
-    </nav>
+  <div id="app" class="container">
+    <b-navbar toggleable="md" variant="light">
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-brand class="mb-0 h1" href="#">Pixel Pics</b-navbar-brand>
+
+      <b-collapse is-nav id="nav_collapse">
+        <b-navbar-nav>
+          <b-nav-item to="/new">Create</b-nav-item>
+          <b-nav-item :to="{name: 'boards', params: {id: randomId}}">Random</b-nav-item>
+          <b-nav-item :to="{name: 'boards', params: {id: nextId }}">Next</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
     <router-view :key="$route.fullPath" />
   </div>
@@ -35,40 +42,7 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
   @import '~bootstrap/dist/css/bootstrap.css';
   @import '~bootstrap-vue/dist/bootstrap-vue.css';
   @import '~vue2-animate/dist/vue2-animate.min.css';
-
-  body {
-    background-color: #ffffff;
-    font-family: 'Montserrat', sans-serif;
-    display: grid;
-    grid-template-rows: auto;
-    justify-items: center;
-    padding-top: 50px;
-  }
-
-  body, html {
-    margin: 0;
-    height: 100%;
-  }
-
-  #app {
-    width: 50%;
-  }
-
-  nav {
-    padding: 20px 20px 20px 0;
-  }
-
-  nav a {
-    padding: 10px;
-    text-decoration: none;
-    background: #ffffff;
-    border-radius: 3px;
-    color: #333333;
-    font-weight: bold;
-    margin-right: 15px;
-  }
 </style>
