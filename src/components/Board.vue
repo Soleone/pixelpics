@@ -46,7 +46,7 @@
 <script>
 import Cell from './Cell.vue';
 import CopyButton from './CopyButton.vue';
-import { cellsToBinaryRows } from '../cells';
+import { cellsToBinaryString } from '../cells';
 import { hintsForCells } from '../hint_generator';
 import { mapState } from 'vuex';
 
@@ -85,7 +85,7 @@ export default {
       'isCompleted',
     ]),
     cellsToBinaryString() {
-      return cellsToBinaryRows(this.cells).map( rows => rows.join('')).join('');
+      return cellsToBinaryString(this.cells)
     },
     transposedCells() {
       return this.cells[0].map( (column, columnIndex) => {

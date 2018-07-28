@@ -1,10 +1,15 @@
+const DIMENSION_DELIMITER = "x";
+const DATA_DELIMITER = ":";
+
+// Input: e.g."3x3:101101101"
+// Output: 2-dimensional Array of cells
 function binaryStringToCells(binaryString) {
-  const [sizeInfo, cellData] = binaryString.split(":");
-  if (cellData === undefined) throw "Expected binary string to contain a colon : to denote the board size."
+  const [sizeInfo, cellData] = binaryString.split(DATA_DELIMITER);
+  if (cellData === undefined) throw `Expected binary string to contain ${DATA_DELIMITER} to denote the board size.`
 
-  const [rowSize, columnSize] = sizeInfo.split("x");
+  const [rowSize, columnSize] = sizeInfo.split(DIMENSION_DELIMITER);
+  if (columnSize === undefined) throw `Expected binary string to contain ${DIMENSION_DELIMITER} to denote row and column count.`
 
-  // row = 1, column = 0, index = 8
   return createCells(rowSize, columnSize, (row, column) => {
     const index = (row * columnSize) + column;
     const filledBinary = cellData[index];
@@ -13,25 +18,16 @@ function binaryStringToCells(binaryString) {
   });
 }
 
-function binaryRowsToCells(rows) {
-  return rows.map( (row, x) => {
-    return row.map( (cell, y) => {
-      return {
-        ...newCell(),
-        filled: (cell == 1),
-        id: `${x}-${y}`
-      }
-    })
-  })
+// Input: 2-dimensional Array of cells
+// Output: e.g."3x3:101101101"
+function cellsToBinaryString(cells) {
+  const rowSize = cells.length;
+  const columnSize = cells[0].length;
+  const binaryRows = cellsToBinaryRows(cells).map( rows => rows.join('')).join('');
+  return `${rowSize}${DIMENSION_DELIMITER}${columnSize}${DATA_DELIMITER}${binaryRows}`
 }
 
-function cellsToBinaryRows(cells) {
-  return cells.map( row => {
-    return row.map( cell => cell.filled ? 1 : 0 );
-  })
-}
-
-function createCells(rows, columns, cellFunction) {
+function createCells(rows, columns, cellFunction = newCell) {
   const cells = [];
   for (let x=0; x<rows; x++) {
     const row = [];
@@ -43,6 +39,8 @@ function createCells(rows, columns, cellFunction) {
   return cells;
 }
 
+// private
+
 function newCell(props = {}) {
   return {
     filled: false,
@@ -52,5 +50,11 @@ function newCell(props = {}) {
   }
 }
 
+function cellsToBinaryRows(cells) {
+  return cells.map( row => {
+    return row.map( cell => cell.filled ? 1 : 0 );
+  })
+}
 
-export { binaryStringToCells, binaryRowsToCells, cellsToBinaryRows, createCells, newCell }
+
+export { binaryStringToCells, cellsToBinaryString, createCells }

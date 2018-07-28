@@ -33,7 +33,7 @@ export default new Router({
       props() {
         return {
           params: {
-            cells: createCells(10, 10, () => newCell()),
+            cells: createCells(10, 10),
             editMode: true
           }
         }
