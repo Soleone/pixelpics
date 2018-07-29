@@ -1,8 +1,6 @@
 <template>
   <div class="board-wrapper animated" :class="{'fadeLeft': isCompleted}">
 
-    <h2 class="bg-white text-muted mt-3">{{ title }}</h2>
-
     <div class="options mt-3" v-if="editMode">
       <copy-button title="Board Code:" :value="cellsToBinaryString">
       </copy-button>
@@ -35,6 +33,8 @@
         </cell>
       </tr>
     </table>
+
+    <h4 class="bg-secondary text-light text-left p-3 mt-3">{{ title }}</h4>
 
     <transition name="bounce">
       <b-alert class="mt-3" variant="success" show v-if="isCompleted && !editMode">Completed successfully!</b-alert>
