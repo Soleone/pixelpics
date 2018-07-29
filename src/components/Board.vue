@@ -34,32 +34,34 @@
       </tr>
     </table>
 
-    <div class="container mt-3">
-      <b-form-group>
-        <b-form-radio-group id="toggle-secondary-action-enabled"
-        buttons
-        button-variant="outline-secondary"
-        v-bind:checked="isSecondaryActionEnabled"
-        @change="toggleIsSecondaryActionEnabled"
-        :options="secondaryActionEnabledButtons" />
-      </b-form-group>
-    </div>
-
-    <h4 class="container bg-secondary text-light text-left p-3 mt-3">
-      <div class="row">
-        <b-badge pill variant="light">
-          {{ formattedId }}
-        </b-badge>
-        <span class="ml-2">{{ title }}</span>
+    <template v-if="!editMode">
+      <div class="container mt-3">
+        <b-form-group>
+          <b-form-radio-group id="toggle-secondary-action-enabled"
+          buttons
+          button-variant="outline-secondary"
+          v-bind:checked="isSecondaryActionEnabled"
+          @change="toggleIsSecondaryActionEnabled"
+          :options="secondaryActionEnabledButtons" />
+        </b-form-group>
       </div>
-    </h4>
 
-    <transition name="bounce">
-      <b-alert class="mt-3" variant="success" show v-if="isCompleted && !editMode">
-        You got it! Try the
-        <router-link :to="{name: 'boards', params: { id: nextId }}">next one.</router-link>
-      </b-alert>
-    </transition>
+      <h4 class="container bg-secondary text-light text-left p-3 mt-3">
+        <div class="row">
+          <b-badge pill variant="light">
+            {{ formattedId }}
+          </b-badge>
+          <span class="ml-2">{{ title }}</span>
+        </div>
+      </h4>
+
+      <transition name="bounce">
+        <b-alert class="mt-3" variant="success" show v-if="isCompleted && !editMode">
+          You got it! Try the
+          <router-link :to="{name: 'boards', params: { id: nextId }}">next one.</router-link>
+        </b-alert>
+      </transition>
+    </template>
   </div>
 </template>
 
