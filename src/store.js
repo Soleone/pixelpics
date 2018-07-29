@@ -35,7 +35,7 @@ const store = new Vuex.Store({
   getters: {
     cellAt(state) {
       return (x, y) => {
-        return state.cells[x][y];
+        return state.cells[y][x];
       }
     }
   },

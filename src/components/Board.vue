@@ -24,14 +24,14 @@
           </td>
       </tr>
 
-      <tr v-for="(row, x) in cells" class="row" :key="`row-${x}`">
+      <tr v-for="(row, y) in cells" class="row" :key="`row-${y}`">
         <td>
           <div class="hint hint-row">
-            {{ hints(x) }}
+            {{ hints(y) }}
           </div>
         </td>
 
-        <cell v-for="(cell, y) in row" :key="cell.id" :x="x" :y="y">
+        <cell v-for="(cell, x) in row" :key="cell.id" :x="x" :y="y">
         </cell>
       </tr>
     </table>

@@ -7,7 +7,7 @@ function binaryStringToCells(binaryString) {
   const [sizeInfo, cellData] = binaryString.split(DATA_DELIMITER);
   if (cellData === undefined) throw `Expected binary string to contain ${DATA_DELIMITER} to denote the board size.`
 
-  const [rowSize, columnSize] = sizeInfo.split(DIMENSION_DELIMITER);
+  const [columnSize, rowSize] = sizeInfo.split(DIMENSION_DELIMITER);
   if (columnSize === undefined) throw `Expected binary string to contain ${DIMENSION_DELIMITER} to denote row and column count.`
 
   return createCells(rowSize, columnSize, (row, column) => {
