@@ -34,10 +34,31 @@
       </tr>
     </table>
 
-    <h4 class="bg-secondary text-light text-left p-3 mt-3">{{ title }}</h4>
+    <div class="container mt-3">
+      <b-form-group>
+        <b-form-radio-group id="toggle-secondary-action-enabled"
+        buttons
+        button-variant="outline-secondary"
+        v-bind:checked="isSecondaryActionEnabled"
+        @change="toggleIsSecondaryActionEnabled"
+        :options="secondaryActionEnabledButtons" />
+      </b-form-group>
+    </div>
+
+    <h4 class="container bg-secondary text-light text-left p-3 mt-3">
+      <div class="row">
+        <b-badge pill variant="light">
+          {{ formattedId }}
+        </b-badge>
+        <span class="ml-2">{{ title }}</span>
+      </div>
+    </h4>
 
     <transition name="bounce">
-      <b-alert class="mt-3" variant="success" show v-if="isCompleted && !editMode">Completed successfully!</b-alert>
+      <b-alert class="mt-3" variant="success" show v-if="isCompleted && !editMode">
+        You got it! Try the
+        <router-link :to="{name: 'boards', params: { id: nextId }}">next one.</router-link>
+      </b-alert>
     </transition>
   </div>
 </template>
@@ -48,13 +69,21 @@ import Cell from './Cell.vue';
 import CopyButton from './CopyButton.vue';
 import { cellsToBinaryString } from '../cells';
 import { hintsForCells } from '../hint_generator';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 const REQUIRES_RESIZE_THRESHOLD = 7;
 
 export default {
   name: 'Board',
   props: ['params'],
+  data() {
+    return {
+      secondaryActionEnabledButtons: [
+        { text: 'Select', value: false },
+        { text: 'Mark', value: true },
+      ]
+    };
+  },
   methods: {
     cellKey(x, y) {
       return x + "-" + y;
@@ -67,13 +96,21 @@ export default {
       let column = this.transposedCells[x];
       return hintsForCells(column);
     },
+    toggleIsSecondaryActionEnabled() {
+      this.$store.commit('toggleIsSecondaryActionEnabled');
+    },
   },
   computed: {
     ...mapState([
+      'id',
       'editMode',
       'cells',
       'title',
       'isCompleted',
+      'isSecondaryActionEnabled'
+    ]),
+    ...mapGetters([
+      'nextId'
     ]),
     cellsToBinaryString() {
       return cellsToBinaryString(this.cells)
@@ -85,6 +122,9 @@ export default {
     },
     requiresCellResize() {
       return this.cells[0].length > REQUIRES_RESIZE_THRESHOLD;
+    },
+    formattedId() {
+      return this.id.toString().padStart(3, "0");
     }
   },
   created() {

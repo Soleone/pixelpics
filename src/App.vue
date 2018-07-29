@@ -7,8 +7,8 @@
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item to="/new">Create</b-nav-item>
-          <b-nav-item :to="{name: 'boards', params: {id: randomId}}">Random</b-nav-item>
-          <b-nav-item :to="{name: 'boards', params: {id: nextId}}">Next</b-nav-item>
+          <b-nav-item :to="{name: 'boards', params: {id: randomId }}">Random</b-nav-item>
+          <b-nav-item :to="{name: 'boards', params: {id: nextId }}">Next</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -21,6 +21,7 @@
 import Cell from './components/Cell.vue'
 import Board from './components/Board.vue'
 import BINARY_CELLS from './cell_data'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'app',
@@ -29,11 +30,9 @@ export default {
     Cell
   },
   computed: {
-    nextId() {
-      if (this.$store.state.id == null) return 1;
-
-      return (parseInt(this.$store.state.id) % Object.keys(BINARY_CELLS).length) + 1;
-    },
+    ...mapGetters([
+      'nextId'
+    ]),
     randomId() {
       return Math.floor(Math.random() * Math.floor(Object.keys(BINARY_CELLS).length));
     }

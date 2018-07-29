@@ -2,7 +2,7 @@
   <transition :name="enterTransition" appear>
     <td class="cell animated"
          :class="classes"
-         @click="primaryAction"
+         @click="primaryOrSecondaryAction"
          @contextmenu.prevent="secondaryAction">
     </td>
   </transition>
@@ -21,6 +21,13 @@ export default {
     }
   },
   methods: {
+    primaryOrSecondaryAction() {
+      if (this.isSecondaryActionEnabled) {
+        this.secondaryAction();
+      } else {
+        this.primaryAction();
+      }
+    },
     primaryAction() {
       if (this.isCompleted) return;
 
@@ -53,7 +60,8 @@ export default {
   computed: {
     ...mapState([
       'editMode',
-      'isCompleted'
+      'isCompleted',
+      'isSecondaryActionEnabled',
     ]),
     cell() {
       return this.$store.getters.cellAt(this.x, this.y);

@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     id: null,
     title: null,
     isCompleted: false,
+    isSecondaryActionEnabled: false,
     //lastAction: null,
 
   },
@@ -31,13 +32,21 @@ const store = new Vuex.Store({
       cell.selected = false;
       cell.marked = !cell.marked;
     },
+    toggleIsSecondaryActionEnabled(state) {
+      state.isSecondaryActionEnabled = !state.isSecondaryActionEnabled;
+    }
   },
   getters: {
     cellAt(state) {
       return (x, y) => {
         return state.cells[y][x];
       }
-    }
+    },
+    nextId(state) {
+      if (state.id == null) return 1;
+
+      return (parseInt(state.id) % Object.keys(BINARY_CELLS).length) + 1;
+    },
   },
 })
 
