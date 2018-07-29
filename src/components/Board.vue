@@ -1,9 +1,9 @@
 <template>
   <div class="board-wrapper animated" :class="{'fadeLeft': isCompleted}">
 
-    <h2 class="bg-white text-muted text-center mt-3">{{ title }}</h2>
+    <h2 class="bg-white text-muted mt-3">{{ title }}</h2>
 
-    <div class="options" v-if="editMode">
+    <div class="options mt-3" v-if="editMode">
       <copy-button title="Board Code:" :value="cellsToBinaryString">
       </copy-button>
     </div>
@@ -37,7 +37,7 @@
     </table>
 
     <transition name="bounce">
-      <b-alert variant="success" show v-if="isCompleted && !editMode">Completed successfully!</b-alert>
+      <b-alert class="mt-3" variant="success" show v-if="isCompleted && !editMode">Completed successfully!</b-alert>
     </transition>
   </div>
 </template>
@@ -67,17 +67,6 @@ export default {
       let column = this.transposedCells[x];
       return hintsForCells(column);
     },
-    copyToClipboard() {
-      let input = document.getElementById('binary-board-input');
-      input.select();
-      document.execCommand('copy');
-      input.blur();
-      this.$root.$emit('bv::hide::tooltip');
-      this.$refs.copiedFeedbackTooltip.$emit('open');
-      setTimeout( () => {
-        this.$root.$emit('bv::hide::tooltip');
-      }, 1000);
-    }
   },
   computed: {
     ...mapState([
@@ -195,12 +184,4 @@ export default {
       width: 23px;
     }
   }
-  .options {
-    padding-top: 12px;
-  }
-
-  .board-wrapper .alert {
-    margin-top: 16px;
-  }
-
 </style>
