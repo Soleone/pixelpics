@@ -12,7 +12,7 @@ export default {
   name: 'Hint',
   props: [
     'vertical',
-    'series'
+    'cells',
   ],
   methods: {
     hints(index) {
@@ -26,6 +26,12 @@ export default {
 
   },
   computed: {
+    filledCells() {
+
+    },
+    selectedCells() {
+
+    },
   },
 }
 </script>
@@ -68,5 +74,15 @@ export default {
 
   .hint-header .hint-header-spacer {
     width: 64px;
+  }
+
+  @media only screen and (max-width: 440px) {
+    .hint-header .hint-header-spacer {
+      width: 64px !important;
+    }
+
+    .requires-cell-resize .hint-header td {
+      width: 23px;
+    }
   }
 </style>
