@@ -67,6 +67,7 @@ export default {
         selected: this.cell.selected,
         marked: this.cell.marked && !this.isCompleted,
         bounceIn: this.displayFilled || this.cell.selected,
+        zoomIn: this.cell.marked,
         'solved-empty': this.isCompleted,
       }
     }
@@ -83,25 +84,22 @@ export default {
 <style scoped>
   .cell {
     display: inline-block;
-    height: 31px;
-    width: 31px;
-    border-top: 1px solid transparent;
-    border-left: 1px solid transparent;
+    height: 32px;
+    width: 32px;
     background-color: #e8e8e8;
     cursor: pointer;
-    -vendor-animation-duration: 0.1s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
   }
 
   .filled {
     background-color: #333;
-    border-top: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
   }
 
   @media only screen and (max-width: 440px) {
     .requires-cell-resize .cell {
-      height: 23px;
-      width: 23px;
+      height: 24px;
+      width: 24px;
     }
   }
 
@@ -111,6 +109,10 @@ export default {
 
   .marked {
     background-color: orange !important;
+    height: 32px;
+    width: 32px;
+    -webkit-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
   }
 
   .selected {
