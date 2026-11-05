@@ -20,6 +20,10 @@ There are 20 built-in puzzles from 3x3 to 10x10. **Next** and **Random** in the 
 
 Open **Create**, pick the size (3 to 10 tiles each way), name it, and click tiles to draw. The **Share** box always holds a link to the puzzle as drawn so far. Anyone who opens it gets the puzzle to solve, with no server involved: the whole picture is in the link, for example `#/play/3x3:101101101?title=too%20easy` (width x height, then one digit per tile, row by row).
 
+## Built with
+
+Vue 2.7, Vuex, Vue Router, BootstrapVue and Vite. Built in 2018, revived in 2026.
+
 ## Run it locally
 
 Needs Node 20 or later.
@@ -32,7 +36,3 @@ npm run build    # static site in dist/
 ```
 
 `npm run media:capture -- --url http://localhost:4173` re-records the gameplay loop against `npm run preview` (needs [agent-browser](https://github.com/vercel-labs/agent-browser) and FFmpeg).
-
-## Built with
-
-Vue 2.7, Vuex, Vue Router, BootstrapVue and Vite. Built in 2018, revived in 2026.
