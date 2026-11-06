@@ -2,7 +2,7 @@
 // Solves a built-in puzzle cell by cell through real clicks and encodes the run as a looping WebP.
 // Usage: npm run media:capture -- [--url http://localhost:4173] [--out docs/media/gameplay.webp]
 // Needs agent-browser (with its browser installed) and FFmpeg on the PATH. Recording and encoding come from showcase.
-import { record } from '@soleone/showcase/capture'
+import { record } from '@soleone/showcase-capture'
 import { parseArgs } from 'node:util'
 
 const { values } = parseArgs({ options: { url: { type: 'string', default: 'https://pixelpics.soleone.xyz' }, out: { type: 'string', default: 'docs/media/gameplay.webp' } } })
